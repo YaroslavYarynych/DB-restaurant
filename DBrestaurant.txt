@@ -1,0 +1,149 @@
+CREATE DATABASE restaurant2;
+
+USE restaurant2;
+
+CREATE TABLE customer(
+id_customer INT,
+cstmr_name VARCHAR(50),
+cstmr_surname VARCHAR(50),
+cstmr_mob_phone VARCHAR(50),
+PRIMARY KEY(id_customer));
+
+CREATE TABLE taable(
+id_table INT,
+num_of_sits VARCHAR(50),
+PRIMARY KEY(id_table));
+
+CREATE TABLE menu(
+id_dish INT,
+dishName VARCHAR(50),
+dishPrice INT,
+PRIMARY KEY(id_dish));
+ALTER TABLE menu MODIFY dishName VARCHAR(50);
+CREATE TABLE employee(
+id_employee INT,
+emplType VARCHAR(50),
+empl_name VARCHAR(50),
+empl_surname VARCHAR(50),
+empl_mob_phone VARCHAR(50),
+date_of_start_work DATE,
+employeeSalary INT,
+PRIMARY KEY(id_employee));
+
+CREATE TABLE reservation(
+id_reservation INT,
+custoner_id INT,
+table_id INT,
+number_of_person INT,
+res_date DATE,
+res_time TIME,
+PRIMARY KEY(id_reservation),
+FOREIGN KEY(custoner_id) REFERENCES customer(id_customer),
+FOREIGN KEY(table_id) REFERENCES taable(id_table));
+
+CREATE TABLE order_r(
+order_id INT,
+customer_id INT,
+reservation_id INT,
+employee_id INT,
+dish_id INT,
+order_date DATE,
+order_time TIME,
+totalPrice INT,
+PRIMARY KEY(order_id),
+FOREIGN KEY(customer_id) REFERENCES customer(id_customer),
+FOREIGN KEY(reservation_id) REFERENCES reservation(id_reservation),
+FOREIGN KEY(employee_id) REFERENCES employee(id_employee),
+FOREIGN KEY(dish_id) REFERENCES menu(id_dish));
+INSERT INTO customer(id_customer, cstmr_name, cstmr_surname, cstmr_mob_phone) values
+('1', 'Anna', 'Lee', '+390936588111'),
+('2', 'Sadie',  'Ward', '+390666511116'),
+('3', 'Riley', 'Hall', '+390442382341'),
+('4', 'Charlotte', 'Robinson', '+390991238766'),
+('5', 'Robert', 'King', '+390674419196'),
+('6', 'Saitama', 'Punch', '+390448722091'),
+('7', 'Forte', 'Air', '+390676589890'),
+('8', 'Foltest', 'Merigold', '+390622992648'),
+('9', 'Leo', 'Bonhart', '+390936511116'),
+('10', 'Yarpen', 'Zigrin', '+390665433891');
+INSERT INTO taable(id_table, num_of_sits) values
+('101', '4'),
+('102', '4'),
+('103', '4'),
+('104', '2'),
+('105', '2'),
+('106', '2'),
+('107', '6'),
+('108', '6'),
+('109', '8'),
+('110', '2');
+INSERT INTO menu(id_dish, dishName, dishPrice) values
+('0001', 'Gnocchi', '20'),
+('0002', 'Lasagne',  '15'),
+('0003', 'Gelato', '10'),
+('0004', 'Ribollita', '25'),
+('0005', 'Polenta', '22'),
+('0006', 'Tortelli and Ravioli', '30'),
+('0007', 'Pizza Margherita', '15'),
+('0008', 'Risotto', '40'),
+('0009', 'Maraaschino', '28'),
+('0010', 'Limoncello', '50');
+INSERT INTO employee(id_employee, emplType, empl_name, empl_surname, empl_mob_phone, date_of_start_work, employeeSalary) values
+('0100', 'waiter', 'Nick', 'Fury', '+390936588771', '2022-01-01', '1250');
+INSERT INTO employee(id_employee, emplType, empl_name, empl_surname, empl_mob_phone, date_of_start_work, employeeSalary) values
+('0200', 'waiter', 'Steven', 'Rogers', '+390641123133', '2021-09-01', '1750'),
+('0300', 'waiter', 'Clinton', 'Barton', '+390090033001', '2022-03-01', '800'),
+('0400', 'waiter', 'Carol', 'Danvers', '+390325655552', '2022-04-15', '450'),
+('0500', 'bartender', 'Geralt', 'Rivia', '+390123456781', '2021-07-30', '2000');
+INSERT INTO reservation(id_reservation, custoner_id, table_id, number_of_person, res_date, res_time) values
+('10001', '1', '101', '4', '2022-05-20', '15:30'),
+('10002', '2', '102', '2', '2022-05-22', '19:30'),
+('10003', '3', '103', '2', '2022-05-19', '17:00'),
+('10004', '4', '104', '2', '2022-05-23', '21:00'),
+('10005', '5', '105', '2', '2022-05-20', '18:00'),
+('10006', '6', '106', '2', '2022-05-20', '16:00'),
+('10007', '7', '107', '4', '2022-05-25', '22:00'),
+('10008', '8', '108', '4', '2022-05-19', '18:30'),
+('10009', '9', '109', '6', '2022-05-22', '20:00'),
+('10010', '10', '110', '2', '2022-05-21', '22:00');
+INSERT INTO reservation(id_reservation, custoner_id, table_id, number_of_person, res_date, res_time) values
+('10011', '2', '105', '2', '2022-05-20', '13:30');
+INSERT INTO order_r(order_id, customer_id, reservation_id, employee_id, dish_id, order_date, order_time, totalPrice)  values
+('201', '1', '10001', '0100', '0001', '2022-05-20', '15:30', '20'),
+('202', '2', '10002', '0100', '0006', '2022-05-22', '19:30', '30'),
+('203', '3', '10003', '0200', '0005', '2022-05-19', '17:00', '22'),
+('204', '4', '10004', '0200', '0002', '2022-05-23', '21:00', '15'),
+('205', '5', '10005', '0300', '0004', '2022-05-20', '18:00', '25'),
+('206', '6', '10006', '0300', '0003', '2022-05-20', '16:00', '10'),
+('207', '7', '10007', '0400', '0008', '2022-05-25', '22:00', '40'),
+('208', '8', '10008', '0400', '0007', '2022-05-19', '18:30', '15'),
+('209', '9', '10009', '0500', '0009', '2022-05-22', '20:00', '28'),
+('210', '10', '10010', '0500', '0010', '2022-05-21', '22:00', '50');
+INSERT INTO order_r(order_id, customer_id, reservation_id, employee_id, dish_id, order_date, order_time, totalPrice)  values
+('211', '2', '10011', '0100', '0003', '2022-05-22', '13:30', '10');
+-- 1 селект. Показує всі замовлення у діапазоні від 20 до 30.
+SELECT order_id, customer_id, employee_id, reservation_id FROM order_r WHERE totalPrice BETWEEN 20 AND 30 ORDER BY totalPrice;
+-- 2 селект. Показує максимальну ціну
+SELECT MAX(dishPrice) AS MAX_SUM
+FROM menu JOIN order_r
+ON id_dish=dish_id;
+-- 3 селект. Показує найвище зарплату.
+SELECT empl_name, empl_surname, employeeSalary
+FROM employee
+WHERE employeeSalary =
+(SELECT MAX(employeeSalary)
+FROM employee);
+-- 4 селект. Замовлення більше певної суми
+SELECT order_id, customer_id FROM order_r WHERE totalPrice > 40 ORDER BY totalPrice;
+-- 5 селект Який офіціант обробляє який стіл
+SELECT order_r.employee_id, reservation.table_id, customer.id_customer FROM order_r, reservation, customer  WHERE customer.id_customer = reservation.custoner_id AND customer.id_customer = order_r.customer_id GROUP BY order_id;
+-- 6 селект Якого дня найбільше замовлень
+SELECT order_date, COUNT(order_id) FROM order_r GROUP BY order_date;
+-- 7 селект. Найбільша виручка та найбільша к-сть замовлень по днях
+SELECT order_date, COUNT(order_id ) AS number_of_orders, SUM(totalPrice) AS cash_of_the_day FROM order_r GROUP BY order_date ORDER BY cash_of_The_day DESC;
+-- 8 селект Скільки замовлень після 18.00
+SELECT order_id, reservation_id, order_date, order_time FROM order_r WHERE order_time > '18:00';
+-- 9 селект найчастіше к-сть люедй за столиком 
+SELECT AVG(number_of_person), AVG(totalPrice) FROM reservation, order_r;
+-- 10 селект Скільки замовлень зробив замовник
+SELECT customer_id, cstmr_name, cstmr_surname, COUNT(order_id) AS order_count FROM order_r CROSS JOIN customer ON order_r.customer_id = customer.id_customer GROUP BY customer_id ORDER BY order_count DESC;
